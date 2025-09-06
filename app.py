@@ -6,23 +6,21 @@ import re
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+import os
 
-# Download required NLTK data (run once)
+# Download required NLTK data
 nltk.download('punkt')
 nltk.download('stopwords')
 
-# Load the saved model and vectorizer
-model = joblib.load('spam_model.pkl')
-vectorizer = joblib.load('vectorizer.pkl')
+# Get the directory where the script is located
+script_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Text preprocessing function (same as in notebook)
-def preprocess_text(text):
-    text = text.lower()
-    text = re.sub(r'[^a-zA-Z\s]', '', text)
-    tokens = word_tokenize(text)
-    stop_words = set(stopwords.words('english'))
-    tokens = [word for word in tokens if word not in stop_words]
-    return ' '.join(tokens)
+# Load the saved model and vectorizer using absolute paths
+model_path = os.path.join(script_dir, 'spam_model.pkl')
+vectorizer_path = os.path.join(script_dir, 'vectorizer.pkl')
+
+model = joblib.load(model_path)
+vectorizer = joblib.load(vectorizer_path)
 
 # Streamlit app
 st.title('Email Spam Detector')
